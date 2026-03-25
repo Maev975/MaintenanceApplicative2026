@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 
 public class CalendarTest {
+// ***************************************************** Tests CalendarManager.java *****************************************************
+
     @Test
     public void testAjouterEvent() {
         CalendarManager cm = new CalendarManager();
@@ -85,6 +87,8 @@ public class CalendarTest {
         assertFalse(cm.conflit(e1, e2));
     }
 
+// ***************************************************** Tests Event.java *****************************************************
+    
     @Test
     public void testAfficherEvenements() {
         CalendarManager cm = new CalendarManager();
@@ -94,5 +98,26 @@ public class CalendarTest {
 
         cm.afficherEvenements();
     }
+
+    @Test 
+    public void testDescription() {
+        Event e1 = new Event("RDV_PERSONNEL", "Piscine", "Max", LocalDateTime.of(2024, 6, 1, 10, 0), 60, null, null, 0);
+        Event e2 = new Event("REUNION", "Projet X", "Alice", LocalDateTime.of(2024, 6, 2, 14, 0), 120, "Salle A", "Bob,Charlie", 0);
+        Event e3 = new Event("PERIODIQUE", "Gym", "Bob", LocalDateTime.of(2024, 6, 1, 8, 0), 60, null, null, 2);
+
+        assertEquals("RDV : Piscine à 2024-06-01T10:00", e1.description());
+        assertEquals("Réunion : Projet X à Salle A avec Bob,Charlie", e2.description());
+        assertEquals("Événement périodique : Gym tous les 2 jours", e3.description());
+    }
+
+    @Test
+    public void testDescriptionTypeInconnu() {
+    Event eInconnu = new Event("AUTRE", "Test", "Max", LocalDateTime.of(2024, 6, 1, 10, 0), 30, null, null, 0);
+    assertEquals("", eInconnu.description(), "La description doit être vide pour un type inconnu");
+    }
+
+// ***************************************************** Tests Main.java *****************************************************
+
+    
 
 }
