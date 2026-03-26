@@ -1,7 +1,10 @@
 package com.example;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 
@@ -103,4 +106,22 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new FrequenceEvenement(-1));
     }
 
+
+    // ************************ Tests pour Event ************************
+    @Test
+    void testDescriptionsPolymorphiques() {
+        // Les Value Objects (préalablement créés)
+        TitreEvenement titre = new TitreEvenement("Sport");
+        DateEvenement debut = new DateEvenement(LocalDateTime.of(2026, 3, 26, 10, 0));
+        
+        // Création de 3 objets distincts mais traités via l'interface commune
+        Event rdv = new RdvPersonnel(titre, debut);
+        Event reunion = new Reunion(titre, new LieuEvenement("Gymnase"), new ParticipantEvenement("Coach"));
+        Event hebdo = new EventPeriodique(titre, new FrequenceEvenement(7));
+
+        // Chaque objet sait ce qu'il doit répondre sans IF
+        assertEquals("RDV : Sport à 2026-03-26T10:00", rdv.description());
+        assertTrue(reunion.description().contains("Réunion"));
+        assertTrue(hebdo.description().contains("périodique"));
+    }
 }

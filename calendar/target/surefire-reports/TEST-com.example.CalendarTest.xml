@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.example.CalendarTest" time="0.078" tests="25" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.example.CalendarTest" time="0.089" tests="25" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="FR"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25\bin"/>
-    <property name="sun.java.command" value="C:\Users\Maximus975\AppData\Local\Temp\surefire7060599795772401001\surefirebooter-20260326085157104_3.jar C:\Users\Maximus975\AppData\Local\Temp\surefire7060599795772401001 2026-03-26T08-51-56_988-jvmRun1 surefire-20260326085157104_1tmp surefire_0-20260326085157104_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Maximus975\AppData\Local\Temp\surefire1184330530161504640\surefirebooter-20260326095722968_3.jar C:\Users\Maximus975\AppData\Local\Temp\surefire1184330530161504640 2026-03-26T09-57-22_859-jvmRun1 surefire-20260326095722968_1tmp surefire_0-20260326095722968_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="com.example.CalendarTest"/>
     <property name="surefire.test.class.path" value="C:\Users\Maximus975\Desktop\S5\maintenance\MaintenanceApplicative2026\calendar\target\test-classes;C:\Users\Maximus975\Desktop\S5\maintenance\MaintenanceApplicative2026\calendar\target\classes;C:\Users\Maximus975\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\Maximus975\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Maximus975\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\Maximus975\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Maximus975\AppData\Local\Temp\surefire7060599795772401001\surefirebooter-20260326085157104_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Maximus975\AppData\Local\Temp\surefire1184330530161504640\surefirebooter-20260326095722968_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.1+8-LTS-27"/>
@@ -61,34 +61,34 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testDescriptionTypeInconnu" classname="com.example.CalendarTest" time="0.016"/>
+  <testcase name="testDescriptionTypeInconnu" classname="com.example.CalendarTest" time="0.017"/>
   <testcase name="testPierreWrongPassword" classname="com.example.CalendarTest" time="0.005"/>
-  <testcase name="testViewAllEventsSubcase" classname="com.example.CalendarTest" time="0.002"/>
+  <testcase name="testViewAllEventsSubcase" classname="com.example.CalendarTest" time="0.004"/>
   <testcase name="testConflit_SecondFaux" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testDateDebutAvantPeriode" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testConflit_UnPeriodiqueAvecNonPeriodique" classname="com.example.CalendarTest" time="0.001"/>
+  <testcase name="testConflit_UnPeriodiqueAvecNonPeriodique" classname="com.example.CalendarTest" time="0.0"/>
   <testcase name="testConflit_PremierFaux" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testRogerWrongPassword" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testAddPeriodicEvent" classname="com.example.CalendarTest" time="0.0"/>
+  <testcase name="testAddPeriodicEvent" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testAddPersonalEvent" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testCreateAccountMismatch" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testPierreLoginSuccess" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testEventsDansPeriode" classname="com.example.CalendarTest" time="0.0"/>
+  <testcase name="testEventsDansPeriode" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testCreateAccountSuccess" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testAfficherEvenements" classname="com.example.CalendarTest" time="0.002">
+  <testcase name="testAfficherEvenements" classname="com.example.CalendarTest" time="0.005">
     <system-out><![CDATA[RDV : Piscine à 2024-06-01T10:00
 Réunion : Projet X à Salle A avec Bob,Charlie
 Événement périodique : Gym tous les 2 jours
 ]]></system-out>
   </testcase>
   <testcase name="testConflit" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testAjouterEvent" classname="com.example.CalendarTest" time="0.001"/>
+  <testcase name="testAjouterEvent" classname="com.example.CalendarTest" time="0.0"/>
   <testcase name="testAddMeetingWithParticipants" classname="com.example.CalendarTest" time="0.002"/>
-  <testcase name="testConflitMemeType" classname="com.example.CalendarTest" time="0.0"/>
-  <testcase name="testViewMonthWeekDay_NoEvents" classname="com.example.CalendarTest" time="0.007"/>
+  <testcase name="testConflitMemeType" classname="com.example.CalendarTest" time="0.001"/>
+  <testcase name="testViewMonthWeekDay_NoEvents" classname="com.example.CalendarTest" time="0.008"/>
   <testcase name="testLoginWithCreatedUser" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testAfficherListeNonEmptyViaMonthView" classname="com.example.CalendarTest" time="0.001"/>
-  <testcase name="testConflit_TotalementVrai" classname="com.example.CalendarTest" time="0.0"/>
+  <testcase name="testConflit_TotalementVrai" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testRogerLoginAndViewAllEvents" classname="com.example.CalendarTest" time="0.001"/>
   <testcase name="testDescription" classname="com.example.CalendarTest" time="0.001"/>
 </testsuite>
