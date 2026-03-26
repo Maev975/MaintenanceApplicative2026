@@ -94,6 +94,7 @@ public class Main {
                 System.out.println("3 - Ajouter une réunion");
                 System.out.println("4 - Ajouter un évènement périodique");
                 System.out.println("5 - Se déconnecter");
+                System.out.println("6 - Supprimer un événement par ID");
                 System.out.print("Votre choix : ");
 
                 String choix = scanner.nextLine();
@@ -160,7 +161,7 @@ public class Main {
                         break;
 
                     case "2":
-                        // Ajout simplifié d'un RDV personnel
+                        // Ajout simplifié d'un RDV personnel en utilisant les Value Objects
                         System.out.print("Titre de l'événement : ");
                         String titre = scanner.nextLine();
                         System.out.print("Année (AAAA) : ");
@@ -176,11 +177,27 @@ public class Main {
                         System.out.print("Durée (en minutes) : ");
                         int duree = Integer.parseInt(scanner.nextLine());
 
-                        calendar.ajouterEvent("RDV_PERSONNEL", titre, utilisateur,
-                                LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute), duree,
-                                "", "", 0);
+                        TitreEvenement titreVO = new TitreEvenement(titre);
+                        DateEvenement dateVO = new DateEvenement(LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute));
+                        DureeEvenement dureeVO = new DureeEvenement(duree);
+                        RdvPersonnel rdv = new RdvPersonnel(EventId.generate(), titreVO, dateVO, dureeVO);
+                        calendar.ajouter(rdv);
 
                         System.out.println("Événement ajouté.");
+                        break;
+
+                    case "6":
+                        System.out.println("\nListe des événements (ID : description) :");
+                        calendar.afficherEvenements();
+                        System.out.print("Entrez l'ID de l'événement à supprimer : ");
+                        String idStr = scanner.nextLine().trim();
+                        try {
+                            EventId idToRemove = EventId.fromString(idStr);
+                            calendar.supprimerParId(idToRemove);
+                            System.out.println("Événement supprimé si présent.");
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("ID invalide.");
+                        }
                         break;
 
                     case "3":
@@ -212,9 +229,14 @@ public class Main {
                             participants += ", " + scanner.nextLine();
                         }
 
-                        calendar.ajouterEvent("REUNION", titre2, utilisateur,
-                                LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2), duree2,
-                                lieu, participants, 0);
+                        // Construire les Value Objects pour la réunion
+                        TitreEvenement titreVO2 = new TitreEvenement(titre2);
+                        LieuEvenement lieuVO = new LieuEvenement(lieu);
+                        ParticipantEvenement participantsVO = new ParticipantEvenement(participants);
+                        DateEvenement dateVO2 = new DateEvenement(LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2));
+                        DureeEvenement dureeVO2 = new DureeEvenement(duree2);
+                        Reunion reunion = new Reunion(EventId.generate(), titreVO2, lieuVO, participantsVO, dateVO2, dureeVO2);
+                        calendar.ajouter(reunion);
 
                         System.out.println("Événement ajouté.");
                         break;
@@ -236,16 +258,19 @@ public class Main {
                         System.out.print("Frequence (en jours) : ");
                         int frequence = Integer.parseInt(scanner.nextLine());
 
-                        calendar.ajouterEvent("PERIODIQUE", titre3, utilisateur,
-                                LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3), 0,
-                                "", "", frequence);
+                        // Construire un événement périodique via les Value Objects
+                        TitreEvenement titreVO3 = new TitreEvenement(titre3);
+                        DateEvenement dateVO3 = new DateEvenement(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3));
+                        FrequenceEvenement frequenceVO = new FrequenceEvenement(frequence);
+                        EventPeriodique eventPeriodique = new EventPeriodique(EventId.generate(), titreVO3, dateVO3, frequenceVO);
+                        calendar.ajouter(eventPeriodique);
 
                         System.out.println("Événement ajouté.");
                         break;
 
                     default:
                         System.out.println("Déconnexion ! Voulez-vous continuer ? (O/N)");
-                        continuer = scanner.nextLine().trim().equalsIgnoreCase("oui");
+                        continuer = scanner.nextLine().trim().equalsIgnoreCase("O");
 
                         utilisateur = null;
                 }

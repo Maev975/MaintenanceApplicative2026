@@ -3,8 +3,8 @@ package com.example;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 
@@ -109,19 +109,52 @@ public class DomaineTest {
 
     // ************************ Tests pour Event ************************
     @Test
-    void testDescriptionsPolymorphiques() {
-        // Les Value Objects (préalablement créés)
-        TitreEvenement titre = new TitreEvenement("Sport");
-        DateEvenement debut = new DateEvenement(LocalDateTime.of(2026, 3, 26, 10, 0));
+    void testDescriptionRdvPersonnel() {
+        EventId id = EventId.generate();
+        TitreEvenement titre = new TitreEvenement("Piscine");
+        DateEvenement date = new DateEvenement(LocalDateTime.of(2024, 6, 1, 10, 0));
         
-        // Création de 3 objets distincts mais traités via l'interface commune
-        Event rdv = new RdvPersonnel(titre, debut);
-        Event reunion = new Reunion(titre, new LieuEvenement("Gymnase"), new ParticipantEvenement("Coach"));
-        Event hebdo = new EventPeriodique(titre, new FrequenceEvenement(7));
+        Event rdv = new RdvPersonnel(id, titre, date, new DureeEvenement(60));
+        
+        assertEquals(id, rdv.id());
+        assertEquals("RDV : Piscine à 2024-06-01T10:00", rdv.description());
+    }
 
-        // Chaque objet sait ce qu'il doit répondre sans IF
-        assertEquals("RDV : Sport à 2026-03-26T10:00", rdv.description());
-        assertTrue(reunion.description().contains("Réunion"));
-        assertTrue(hebdo.description().contains("périodique"));
+    @Test
+    void chaqueEvenementDoitAvoirUnIdUnique() {
+        EventId id = EventId.generate();
+        TitreEvenement titre = new TitreEvenement("Test ID");
+        DateEvenement date = new DateEvenement(LocalDateTime.now());
+        RdvPersonnel rdv = new RdvPersonnel(id, titre, date, new DureeEvenement(30));
+        
+        assertEquals(id, rdv.id());
+    }
+
+    @Test
+    void testSuppressionParId() {
+        CalendarManager cm = new CalendarManager();
+        EventId idASupprimer = EventId.generate();
+        
+        Event e1 = new RdvPersonnel(idASupprimer, new TitreEvenement("A supprimer"), new DateEvenement(LocalDateTime.now()), new DureeEvenement(30));
+        Event e2 = new RdvPersonnel(EventId.generate(), new TitreEvenement("A garder"), new DateEvenement(LocalDateTime.now()), new DureeEvenement(30));
+        
+        cm.ajouter(e1);
+        cm.ajouter(e2);
+        
+        cm.supprimerParId(idASupprimer);
+        
+        assertEquals(1, cm.getEvents().size());
+        assertFalse(cm.getEvents().contains(e1));
+    }
+    
+    @Test
+    void testDescriptionEventPeriodique() {
+        EventId id = EventId.generate();
+        TitreEvenement titre = new TitreEvenement("Sport");
+        FrequenceEvenement frequence = new FrequenceEvenement(7);
+        
+        Event periodique = new EventPeriodique(id, titre, new DateEvenement(LocalDateTime.now()), frequence);
+        
+        assertEquals("Événement périodique : Sport tous les 7 jours", periodique.description());
     }
 }

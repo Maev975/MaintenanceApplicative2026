@@ -1,6 +1,36 @@
 package com.example;
 
-public record Reunion(TitreEvenement title, LieuEvenement lieu, ParticipantEvenement participants) implements Event {
+import java.time.LocalDateTime;
+
+public record Reunion(
+    EventId id, 
+    TitreEvenement title, 
+    LieuEvenement lieu, 
+    ParticipantEvenement participants,
+    DateEvenement dateDebut,  
+    DureeEvenement duree      
+) implements Event {
+
+    @Override 
+    public LocalDateTime getDebut() { 
+        return dateDebut.value(); 
+    }
+
+    @Override 
+    public LocalDateTime getFin() { 
+        return dateDebut.value().plusMinutes(duree.value()); 
+    }
+
+    @Override
+    public boolean estDansPeriode(LocalDateTime debut, LocalDateTime fin) {
+        return !getDebut().isBefore(debut) && !getDebut().isAfter(fin);
+    }
+
+    @Override
+    public boolean estEnConflitAvec(Event autre) {
+        return this.getDebut().isBefore(autre.getFin()) && this.getFin().isAfter(autre.getDebut());
+    }
+
     @Override
     public String description() {
         return "Réunion : " + title.value() + " à " + lieu.value() + " avec " + participants.value();
