@@ -1,0 +1,61 @@
+# Maven
+target/
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDEs and editors
+.idea/
+*.iml
+out/
+.vscode/
+.classpath
+.project
+.settings/
+
+# Eclipse specific
+bin/
+
+# IntelliJ
+/.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Gradle
+.gradle/
+build/
+
+# Generated sources/tests
+generated-sources/
+generated-test-sources/
+test-classes/
+
+# Maven build files
+dependency-reduced-pom.xml
+release.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+.mvn/
+
+# Surefire / Test reports
+surefire-reports/
+
+# Coverage
+jacoco.exec
+
