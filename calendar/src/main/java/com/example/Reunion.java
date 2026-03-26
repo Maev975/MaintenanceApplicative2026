@@ -3,22 +3,23 @@ package com.example;
 import java.time.LocalDateTime;
 
 public record Reunion(
-    EventId id, 
-    TitreEvenement title, 
-    LieuEvenement lieu, 
+    EventId id,
+    TitreEvenement title,
+    LieuEvenement lieu,
     ParticipantEvenement participants,
-    DateEvenement dateDebut,  
-    DureeEvenement duree      
+    DateEvenement dateDebut,
+    HeureDebut heureDebut,
+    DureeEvenement duree
 ) implements Event {
 
-    @Override 
-    public LocalDateTime getDebut() { 
-        return dateDebut.value(); 
+    @Override
+    public LocalDateTime getDebut() {
+        return LocalDateTime.of(dateDebut.value(), heureDebut.value());
     }
 
-    @Override 
-    public LocalDateTime getFin() { 
-        return dateDebut.value().plusMinutes(duree.value()); 
+    @Override
+    public LocalDateTime getFin() {
+        return getDebut().plusMinutes(duree.value());
     }
 
     @Override

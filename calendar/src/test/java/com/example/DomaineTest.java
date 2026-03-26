@@ -1,6 +1,7 @@
 package com.example;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,13 +10,14 @@ import org.junit.jupiter.api.Test;
 
 
 public class DomaineTest {
+
     // ************************ Tests pour TitreEvenement ************************
-   @Test
+    @Test
     void testTitreEvenement() {
         TitreEvenement titre = new TitreEvenement("Dentiste");
         assertEquals("Dentiste", titre.value());
     }
-    
+
     @Test
     void testTitreEvenementNull() {
         assertThrows(IllegalArgumentException.class, () -> new TitreEvenement(null));
@@ -44,11 +46,11 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement(""));
         assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement("   "));
     }
-    
+
     // ************************ Tests pour DateEvenement ************************
     @Test
     void testDateEvenement() {
-        java.time.LocalDateTime date = java.time.LocalDateTime.of(2024, 6, 1, 10, 0);
+        LocalDate date = LocalDate.of(2024, 6, 1);
         DateEvenement dateEvenement = new DateEvenement(date);
         assertEquals(date, dateEvenement.value());
     }
@@ -56,6 +58,18 @@ public class DomaineTest {
     @Test
     void testDateEvenementNull() {
         assertThrows(IllegalArgumentException.class, () -> new DateEvenement(null));
+    }
+
+    // ************************ Tests pour HeureDebut ************************
+    @Test
+    void testHeureDebut() {
+        HeureDebut heure = new HeureDebut(LocalTime.of(10, 30));
+        assertEquals(LocalTime.of(10, 30), heure.value());
+    }
+
+    @Test
+    void testHeureDebutNull() {
+        assertThrows(IllegalArgumentException.class, () -> new HeureDebut(null));
     }
 
     // ************************ Tests pour DureeEvenement ************************
@@ -94,28 +108,41 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new ParticipantEvenement(null));
     }
 
-    // ************************ Tests pour FrequenceEvenement ************************
+    // ************************ Tests pour Frequences polymorphiques ************************
     @Test
-    void testFrequenceEvenement() {
-        FrequenceEvenement frequence = new FrequenceEvenement(7);
-        assertEquals(7, frequence.value());
+    void testFrequenceHebdomadaire() {
+        FrequenceHebdomadaire f = new FrequenceHebdomadaire();
+        assertEquals("chaque semaine", f.descriptionPeriode());
+        var base = java.time.LocalDateTime.of(2024, 6, 1, 8, 0);
+        assertEquals(base.plusWeeks(1), f.prochaine(base));
     }
 
     @Test
-    void testFrequenceEvenementNegative() {
-        assertThrows(IllegalArgumentException.class, () -> new FrequenceEvenement(-1));
+    void testFrequenceMensuelle() {
+        FrequenceMensuelle f = new FrequenceMensuelle();
+        assertEquals("chaque mois", f.descriptionPeriode());
+        var base = java.time.LocalDateTime.of(2024, 6, 1, 8, 0);
+        assertEquals(base.plusMonths(1), f.prochaine(base));
     }
 
+    @Test
+    void testFrequenceAnnuelle() {
+        FrequenceAnnuelle f = new FrequenceAnnuelle();
+        assertEquals("chaque année", f.descriptionPeriode());
+        var base = java.time.LocalDateTime.of(2024, 6, 1, 8, 0);
+        assertEquals(base.plusYears(1), f.prochaine(base));
+    }
 
     // ************************ Tests pour Event ************************
     @Test
     void testDescriptionRdvPersonnel() {
         EventId id = EventId.generate();
         TitreEvenement titre = new TitreEvenement("Piscine");
-        DateEvenement date = new DateEvenement(LocalDateTime.of(2024, 6, 1, 10, 0));
-        
-        Event rdv = new RdvPersonnel(id, titre, date, new DureeEvenement(60));
-        
+        DateEvenement date = new DateEvenement(LocalDate.of(2024, 6, 1));
+        HeureDebut heure = new HeureDebut(LocalTime.of(10, 0));
+
+        Event rdv = new RdvPersonnel(id, titre, date, heure, new DureeEvenement(60));
+
         assertEquals(id, rdv.id());
         assertEquals("RDV : Piscine à 2024-06-01T10:00", rdv.description());
     }
@@ -124,9 +151,10 @@ public class DomaineTest {
     void chaqueEvenementDoitAvoirUnIdUnique() {
         EventId id = EventId.generate();
         TitreEvenement titre = new TitreEvenement("Test ID");
-        DateEvenement date = new DateEvenement(LocalDateTime.now());
-        RdvPersonnel rdv = new RdvPersonnel(id, titre, date, new DureeEvenement(30));
-        
+        DateEvenement date = new DateEvenement(LocalDate.now());
+        HeureDebut heure = new HeureDebut(LocalTime.of(9, 0));
+        RdvPersonnel rdv = new RdvPersonnel(id, titre, date, heure, new DureeEvenement(30));
+
         assertEquals(id, rdv.id());
     }
 
@@ -134,27 +162,51 @@ public class DomaineTest {
     void testSuppressionParId() {
         CalendarManager cm = new CalendarManager();
         EventId idASupprimer = EventId.generate();
-        
-        Event e1 = new RdvPersonnel(idASupprimer, new TitreEvenement("A supprimer"), new DateEvenement(LocalDateTime.now()), new DureeEvenement(30));
-        Event e2 = new RdvPersonnel(EventId.generate(), new TitreEvenement("A garder"), new DateEvenement(LocalDateTime.now()), new DureeEvenement(30));
-        
+        DateEvenement date = new DateEvenement(LocalDate.now());
+        HeureDebut heure = new HeureDebut(LocalTime.of(9, 0));
+
+        Event e1 = new RdvPersonnel(idASupprimer, new TitreEvenement("A supprimer"), date, heure, new DureeEvenement(30));
+        Event e2 = new RdvPersonnel(EventId.generate(), new TitreEvenement("A garder"), date, heure, new DureeEvenement(30));
+
         cm.ajouter(e1);
         cm.ajouter(e2);
-        
+
         cm.supprimerParId(idASupprimer);
-        
+
         assertEquals(1, cm.getEvents().size());
         assertFalse(cm.getEvents().contains(e1));
     }
-    
+
     @Test
     void testDescriptionEventPeriodique() {
         EventId id = EventId.generate();
         TitreEvenement titre = new TitreEvenement("Sport");
-        FrequenceEvenement frequence = new FrequenceEvenement(7);
-        
-        Event periodique = new EventPeriodique(id, titre, new DateEvenement(LocalDateTime.now()), frequence);
-        
-        assertEquals("Événement périodique : Sport tous les 7 jours", periodique.description());
+        DateEvenement date = new DateEvenement(LocalDate.of(2024, 6, 1));
+        HeureDebut heure = new HeureDebut(LocalTime.of(8, 0));
+
+        Event periodique = new EventPeriodique(id, titre, date, heure, new DureeEvenement(60), new FrequenceHebdomadaire());
+
+        assertEquals("Événement périodique : Sport chaque semaine", periodique.description());
+    }
+
+    @Test
+    void testDescriptionEventPeriodiqueMensuel() {
+        EventId id = EventId.generate();
+        Event periodique = new EventPeriodique(id, new TitreEvenement("Bilan"),
+            new DateEvenement(LocalDate.of(2024, 6, 1)),
+            new HeureDebut(LocalTime.of(9, 0)),
+            new DureeEvenement(30),
+            new FrequenceMensuelle());
+        assertEquals("Événement périodique : Bilan chaque mois", periodique.description());
+    }
+
+    @Test
+    void testDescriptionEventPeriodiqueAnnuel() {
+        Event periodique = new EventPeriodique(EventId.generate(), new TitreEvenement("Anniversaire"),
+            new DateEvenement(LocalDate.of(2024, 6, 1)),
+            new HeureDebut(LocalTime.of(0, 0)),
+            new DureeEvenement(60),
+            new FrequenceAnnuelle());
+        assertEquals("Événement périodique : Anniversaire chaque année", periodique.description());
     }
 }

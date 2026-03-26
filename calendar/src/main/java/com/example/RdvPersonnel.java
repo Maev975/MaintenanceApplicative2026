@@ -2,10 +2,10 @@ package com.example;
 
 import java.time.LocalDateTime;
 
-public record RdvPersonnel(EventId id, TitreEvenement title, DateEvenement dateDebut, DureeEvenement duree) implements Event {
-    
-    @Override public LocalDateTime getDebut() { return dateDebut.value(); }
-    @Override public LocalDateTime getFin() { return dateDebut.value().plusMinutes(duree.value()); }
+public record RdvPersonnel(EventId id, TitreEvenement title, DateEvenement dateDebut, HeureDebut heureDebut, DureeEvenement duree) implements Event {
+
+    @Override public LocalDateTime getDebut() { return LocalDateTime.of(dateDebut.value(), heureDebut.value()); }
+    @Override public LocalDateTime getFin() { return getDebut().plusMinutes(duree.value()); }
 
     @Override
     public boolean estDansPeriode(LocalDateTime debut, LocalDateTime fin) {
@@ -17,5 +17,5 @@ public record RdvPersonnel(EventId id, TitreEvenement title, DateEvenement dateD
         return this.getDebut().isBefore(autre.getFin()) && this.getFin().isAfter(autre.getDebut());
     }
 
-    @Override public String description() { return "RDV : " + title.value() + " à " + dateDebut.value().toString(); }
+    @Override public String description() { return "RDV : " + title.value() + " à " + getDebut(); }
 }

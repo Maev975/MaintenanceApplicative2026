@@ -1,6 +1,8 @@
 package com.example;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
@@ -161,7 +163,6 @@ public class Main {
                         break;
 
                     case "2":
-                        // Ajout simplifié d'un RDV personnel en utilisant les Value Objects
                         System.out.print("Titre de l'événement : ");
                         String titre = scanner.nextLine();
                         System.out.print("Année (AAAA) : ");
@@ -178,9 +179,10 @@ public class Main {
                         int duree = Integer.parseInt(scanner.nextLine());
 
                         TitreEvenement titreVO = new TitreEvenement(titre);
-                        DateEvenement dateVO = new DateEvenement(LocalDateTime.of(annee, moisRdv, jourRdv, heure, minute));
+                        DateEvenement dateVO = new DateEvenement(LocalDate.of(annee, moisRdv, jourRdv));
+                        HeureDebut heureVO = new HeureDebut(LocalTime.of(heure, minute));
                         DureeEvenement dureeVO = new DureeEvenement(duree);
-                        RdvPersonnel rdv = new RdvPersonnel(EventId.generate(), titreVO, dateVO, dureeVO);
+                        RdvPersonnel rdv = new RdvPersonnel(EventId.generate(), titreVO, dateVO, heureVO, dureeVO);
                         calendar.ajouter(rdv);
 
                         System.out.println("Événement ajouté.");
@@ -201,7 +203,6 @@ public class Main {
                         break;
 
                     case "3":
-                        // Ajout simplifié d'une réunion
                         System.out.print("Titre de l'événement : ");
                         String titre2 = scanner.nextLine();
                         System.out.print("Année (AAAA) : ");
@@ -218,31 +219,28 @@ public class Main {
                         int duree2 = Integer.parseInt(scanner.nextLine());
                         System.out.println("Lieu :");
                         String lieu = scanner.nextLine();
-                        
+
                         String participants = utilisateur;
-                        
-                        boolean encore = true;
+
                         System.out.println("Ajouter un participant ? (oui / non)");
-                        while (scanner.nextLine().equals("oui"))
-                        {
+                        while (scanner.nextLine().equals("oui")) {
                             System.out.print("Participants : " + participants);
                             participants += ", " + scanner.nextLine();
                         }
 
-                        // Construire les Value Objects pour la réunion
                         TitreEvenement titreVO2 = new TitreEvenement(titre2);
                         LieuEvenement lieuVO = new LieuEvenement(lieu);
                         ParticipantEvenement participantsVO = new ParticipantEvenement(participants);
-                        DateEvenement dateVO2 = new DateEvenement(LocalDateTime.of(annee2, moisRdv2, jourRdv2, heure2, minute2));
+                        DateEvenement dateVO2 = new DateEvenement(LocalDate.of(annee2, moisRdv2, jourRdv2));
+                        HeureDebut heureVO2 = new HeureDebut(LocalTime.of(heure2, minute2));
                         DureeEvenement dureeVO2 = new DureeEvenement(duree2);
-                        Reunion reunion = new Reunion(EventId.generate(), titreVO2, lieuVO, participantsVO, dateVO2, dureeVO2);
+                        Reunion reunion = new Reunion(EventId.generate(), titreVO2, lieuVO, participantsVO, dateVO2, heureVO2, dureeVO2);
                         calendar.ajouter(reunion);
 
                         System.out.println("Événement ajouté.");
                         break;
 
-                        case "4":
-                        // Ajout simplifié d'une réunion
+                    case "4":
                         System.out.print("Titre de l'événement : ");
                         String titre3 = scanner.nextLine();
                         System.out.print("Année (AAAA) : ");
@@ -255,14 +253,28 @@ public class Main {
                         int heure3 = Integer.parseInt(scanner.nextLine());
                         System.out.print("Minute début (0-59) : ");
                         int minute3 = Integer.parseInt(scanner.nextLine());
-                        System.out.print("Frequence (en jours) : ");
-                        int frequence = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Durée (en minutes) : ");
+                        int duree3 = Integer.parseInt(scanner.nextLine());
 
-                        // Construire un événement périodique via les Value Objects
+                        System.out.println("Fréquence :");
+                        System.out.println("1 - Hebdomadaire");
+                        System.out.println("2 - Mensuelle");
+                        System.out.println("3 - Annuelle");
+                        System.out.print("Votre choix : ");
+                        String choixFreq = scanner.nextLine();
+
+                        Frequence[] frequences = new Frequence[]{
+                            new FrequenceHebdomadaire(),
+                            new FrequenceMensuelle(),
+                            new FrequenceAnnuelle()
+                        };
+                        Frequence frequenceChoisie = frequences[Integer.parseInt(choixFreq) - 1];
+
                         TitreEvenement titreVO3 = new TitreEvenement(titre3);
-                        DateEvenement dateVO3 = new DateEvenement(LocalDateTime.of(annee3, moisRdv3, jourRdv3, heure3, minute3));
-                        FrequenceEvenement frequenceVO = new FrequenceEvenement(frequence);
-                        EventPeriodique eventPeriodique = new EventPeriodique(EventId.generate(), titreVO3, dateVO3, frequenceVO);
+                        DateEvenement dateVO3 = new DateEvenement(LocalDate.of(annee3, moisRdv3, jourRdv3));
+                        HeureDebut heureVO3 = new HeureDebut(LocalTime.of(heure3, minute3));
+                        DureeEvenement dureeVO3 = new DureeEvenement(duree3);
+                        EventPeriodique eventPeriodique = new EventPeriodique(EventId.generate(), titreVO3, dateVO3, heureVO3, dureeVO3, frequenceChoisie);
                         calendar.ajouter(eventPeriodique);
 
                         System.out.println("Événement ajouté.");
@@ -271,7 +283,6 @@ public class Main {
                     default:
                         System.out.println("Déconnexion ! Voulez-vous continuer ? (O/N)");
                         continuer = scanner.nextLine().trim().equalsIgnoreCase("O");
-
                         utilisateur = null;
                 }
             }
