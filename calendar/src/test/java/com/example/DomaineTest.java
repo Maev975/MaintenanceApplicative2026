@@ -55,4 +55,16 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new DateEvenement(null));
     }
 
+    // ************************ Tests pour DureeEvenement ************************
+    @Test
+    void testDureeEvenement() {
+        DureeEvenement duree = new DureeEvenement(60);
+        assertEquals(60, duree.value());
+    }
+
+    @Test
+    void testDureeEvenementNegative() {
+        assertThrows(IllegalArgumentException.class, () -> new DureeEvenement(-1));
+    }
+
 }
