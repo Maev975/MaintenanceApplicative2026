@@ -67,4 +67,28 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new DureeEvenement(-1));
     }
 
+    // ************************ Tests pour LieuEvenement ************************
+    @Test
+    void testLieuEvenement() {
+        LieuEvenement lieu = new LieuEvenement("Salle de réunion");
+        assertEquals("Salle de réunion", lieu.value());
+    }
+
+    @Test
+    void testLieuEvenementNull() {
+        assertThrows(IllegalArgumentException.class, () -> new LieuEvenement(null));
+    }
+
+    // ************************ Tests pour ParticipantEvenement ************************
+    @Test
+    void testParticipantEvenement() {
+        ParticipantEvenement participant = new ParticipantEvenement("Bob");
+        assertEquals("Bob", participant.value());
+    }
+
+    @Test
+    void testParticipantEvenementNull() {
+        assertThrows(IllegalArgumentException.class, () -> new ParticipantEvenement(null));
+    }
+
 }
