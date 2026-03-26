@@ -24,4 +24,23 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new TitreEvenement("   "));
     }
 
+    // ************************ Tests pour ProprietaireEvenement ************************
+    @Test
+    void testProprietaire() {
+        ProprietaireEvenement proprietaire = new ProprietaireEvenement("Alice");
+        assertEquals("Alice", proprietaire.value());
+    }
+
+    @Test
+    void testProprietaireNull() {
+        assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement(null));
+    }
+
+    @Test
+    void testProprietaireBlank() {
+        assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement(""));
+        assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement("   "));
+    }
+    
+
 }
