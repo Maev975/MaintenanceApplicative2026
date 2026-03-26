@@ -91,4 +91,16 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new ParticipantEvenement(null));
     }
 
+    // ************************ Tests pour FrequenceEvenement ************************
+    @Test
+    void testFrequenceEvenement() {
+        FrequenceEvenement frequence = new FrequenceEvenement(7);
+        assertEquals(7, frequence.value());
+    }
+
+    @Test
+    void testFrequenceEvenementNegative() {
+        assertThrows(IllegalArgumentException.class, () -> new FrequenceEvenement(-1));
+    }
+
 }
