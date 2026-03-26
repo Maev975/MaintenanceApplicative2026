@@ -42,5 +42,17 @@ public class DomaineTest {
         assertThrows(IllegalArgumentException.class, () -> new ProprietaireEvenement("   "));
     }
     
+    // ************************ Tests pour DateEvenement ************************
+    @Test
+    void testDateEvenement() {
+        java.time.LocalDateTime date = java.time.LocalDateTime.of(2024, 6, 1, 10, 0);
+        DateEvenement dateEvenement = new DateEvenement(date);
+        assertEquals(date, dateEvenement.value());
+    }
+
+    @Test
+    void testDateEvenementNull() {
+        assertThrows(IllegalArgumentException.class, () -> new DateEvenement(null));
+    }
 
 }
